@@ -120,8 +120,8 @@ int main(int, char**)
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
-    //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, nullptr, io.Fonts->GetGlyphRangesJapanese());
-    //IM_ASSERT(font != nullptr);
+    ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Users\\admin\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Mabinogi_Classic_TTF.ttf", 18.0f, nullptr, io.Fonts->GetGlyphRangesKorean());
+    IM_ASSERT(font != nullptr);
 
     // Our state
     bool show_demo_window = true;
@@ -198,6 +198,7 @@ int main(int, char**)
             ImGui::Text("Hello from another window!");
             if (ImGui::Button("Close Me"))
                 show_another_window = false;
+            ImGui::Text("Test");
             ImGui::End();
         }
 
