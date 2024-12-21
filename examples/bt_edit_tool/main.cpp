@@ -1,4 +1,4 @@
-// Dear ImGui: standalone example application for SDL2 + OpenGL
+﻿// Dear ImGui: standalone example application for SDL2 + OpenGL
 // (SDL is a cross-platform general purpose library for handling windows, inputs, OpenGL/Vulkan/Metal graphics context creation, etc.)
 
 // Learn about Dear ImGui:
@@ -22,6 +22,15 @@
 #ifdef __EMSCRIPTEN__
 #include "../libs/emscripten/emscripten_mainloop_stub.h"
 #endif
+
+// 루아 연결
+extern "C" { 
+    #include "lua.h"
+    #include "lauxlib.h"
+    #include "lualib.h"
+}
+#pragma comment(lib, "lua54.lib")
+#include <string>
 
 // Main code
 int main(int, char**)
@@ -194,11 +203,28 @@ int main(int, char**)
         // 3. Show another simple window.
         if (show_another_window)
         {
-            ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-            ImGui::Text("Hello from another window!");
-            if (ImGui::Button("Close Me"))
+            ImGui::Begin("테스트 편집기", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+            ImGui::Text("테스트용 편집기");
+            if (ImGui::Button("닫기"))
                 show_another_window = false;
-            ImGui::Text("Test");
+
+           static std::string textString = "누르기 전";
+            
+            if (ImGui::Button("Lua"))
+            {
+                lua_State* L = luaL_newstate(); // Lua 상태 생성
+                luaL_openlibs(L);              // Lua 기본 라이브러리 열기
+
+                // Lua 파일 로드
+                if (luaL_loadfile(L, "test.lua") || lua_pcall(L, 0, 1, 0)) {
+                    textString = "Lua 파일을 열 수 없습니다.";
+                }
+                
+                if (lua_isstring(L, -1)) {
+                    textString = lua_tostring(L, -1);
+                }
+            }
+            ImGui::Text(textString.c_str());
             ImGui::End();
         }
 
